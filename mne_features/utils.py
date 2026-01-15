@@ -337,7 +337,7 @@ def _get_python_func(func):
         return func
 
 
-def _wavelet_coefs(data, wavelet_name='db4'):
+def _wavelet_coefs(data, wavelet_name='db4', level=6):
     """Compute Discrete Wavelet Transform coefficients.
 
     Parameters
@@ -357,7 +357,7 @@ def _wavelet_coefs(data, wavelet_name='db4'):
          of detail coefficients.
     """
     wavelet = pywt.Wavelet(wavelet_name)
-    levdec = min(pywt.dwt_max_level(data.shape[-1], wavelet.dec_len), 6)
+    levdec = min(pywt.dwt_max_level(data.shape[-1], wavelet.dec_len), level)
     coefs = pywt.wavedec(data, wavelet=wavelet, level=levdec)
     return coefs
 
