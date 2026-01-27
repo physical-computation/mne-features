@@ -1541,7 +1541,7 @@ def compute_wavelet_coef_energy(data, wavelet_name='db4', levels=6):
            Neuroscience Methods, 200(2), 257-271.
     """
     n_channels = data.shape[0]
-    coefs = _wavelet_coefs(data, wavelet=wavelet_name, level=levels)
+    coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
     levdec = len(coefs) - 1
     wavelet_energy = np.zeros((n_channels, levdec))
     for j in range(n_channels):
@@ -1550,11 +1550,11 @@ def compute_wavelet_coef_energy(data, wavelet_name='db4', levels=6):
     return wavelet_energy.ravel()
 
 
-def _compute_wavelet_coef_energy_feat_names(data, wavelet_name, **kwargs):
+def _compute_wavelet_coef_energy_feat_names(data, wavelet_name='db4', levels=6, **kwargs):
     """Utility function to create feature names compatible with the output of
     :func:`mne_features.univariate.compute_wavelet_coef_energy`."""
     n_channels = data.shape[0]
-    coefs = _wavelet_coefs(data, wavelet_name)
+    coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
     levdec = len(coefs) - 1
     return ['ch%s__%s' % (ch, i) for ch in range(n_channels)
             for i in range(levdec)]
@@ -1594,7 +1594,7 @@ def compute_wavelet_coef_relative_energy(data, wavelet_name='db4', levels=6):
 
     """
     n_channels = data.shape[0]
-    coefs = _wavelet_coefs(data, wavelet=wavelet_name, level=levels)
+    coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
     levdec = len(coefs) - 1
     relative_energy = np.zeros((n_channels, levdec))
     for j in range(n_channels):
@@ -1607,11 +1607,11 @@ def compute_wavelet_coef_relative_energy(data, wavelet_name='db4', levels=6):
     return relative_energy.ravel()
 
 
-def _compute_wavelet_coef_relative_energy_feat_names(data, wavelet_name, **kwargs):
+def _compute_wavelet_coef_relative_energy_feat_names(data, wavelet_name='db4', levels=6, **kwargs):
     """Utility function to create feature names compatible with the output of
     :func:`mne_features.univariate.compute_wavelet_coef_relative_energy`."""
     n_channels = data.shape[0]
-    coefs = _wavelet_coefs(data, wavelet_name)
+    coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
     levdec = len(coefs) - 1
     return ['ch%s__%s' % (ch, i) for ch in range(n_channels)
             for i in range(levdec)]
