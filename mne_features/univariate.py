@@ -1542,11 +1542,11 @@ def compute_wavelet_coef_energy(data, wavelet_name='db4', levels=6):
     """
     n_channels = data.shape[0]
     coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
-    levdec = len(coefs) - 1
+    levdec = len(coefs)
     wavelet_energy = np.zeros((n_channels, levdec))
     for j in range(n_channels):
         for level in range(levdec):
-            wavelet_energy[j, level] = np.sum(coefs[levdec - level][j, :] ** 2)
+            wavelet_energy[j, level] = np.sum(coefs[levdec-level-1][j, :] ** 2)
     return wavelet_energy.ravel()
 
 
@@ -1555,9 +1555,11 @@ def _compute_wavelet_coef_energy_feat_names(data, wavelet_name='db4', levels=6, 
     :func:`mne_features.univariate.compute_wavelet_coef_energy`."""
     n_channels = data.shape[0]
     coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
-    levdec = len(coefs) - 1
+    levdec = len(coefs)
+    appLev = levdec-1
+    coeffStrings = ['D%s' % i for i in range(1,levdec)]+['A%s' % appLev]
     return ['ch%s__%s' % (ch, i) for ch in range(n_channels)
-            for i in range(levdec)]
+            for i in coeffStrings]
 
 
 compute_wavelet_coef_energy.get_feature_names = \
@@ -1595,12 +1597,12 @@ def compute_wavelet_coef_relative_energy(data, wavelet_name='db4', levels=6):
     """
     n_channels = data.shape[0]
     coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
-    levdec = len(coefs) - 1
+    levdec = len(coefs)
     relative_energy = np.zeros((n_channels, levdec))
     for j in range(n_channels):
         wavelet_energy = np.zeros((levdec))
         for level in range(levdec):
-            wavelet_energy[level] = np.sum(coefs[levdec - level][j, :] ** 2)
+            wavelet_energy[level] = np.sum(coefs[levdec - level -1][j, :] ** 2)
         total_energy = np.sum(wavelet_energy)
         for level in range(levdec):
             relative_energy[j,level] = wavelet_energy[level]/total_energy
@@ -1612,9 +1614,11 @@ def _compute_wavelet_coef_relative_energy_feat_names(data, wavelet_name='db4', l
     :func:`mne_features.univariate.compute_wavelet_coef_relative_energy`."""
     n_channels = data.shape[0]
     coefs = _wavelet_coefs(data, wavelet_name=wavelet_name, level=levels)
-    levdec = len(coefs) - 1
+    levdec = len(coefs)
+    appLev = levdec-1
+    coeffStrings = ['D%s' % i for i in range(1,levdec)]+['A%s' % appLev]
     return ['ch%s__%s' % (ch, i) for ch in range(n_channels)
-            for i in range(levdec)]
+            for i in coeffStrings]
 
 
 compute_wavelet_coef_relative_energy.get_feature_names = \
